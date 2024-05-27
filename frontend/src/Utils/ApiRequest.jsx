@@ -1,5 +1,5 @@
-// export const host = "http://64.23.153.14:4000";
-export const host = "http://localhost:4000";
+export const host = "http://64.23.153.14:4000";
+// export const host = "http://localhost:4000";
 export const setAvatarAPI = `${host}/api/auth/setAvatar`;
 export const registerAPI = `${host}/api/auth/register`;
 export const loginAPI = `${host}/api/auth/login`;
