@@ -21,10 +21,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static("uploads"));
 
-app.use(helmet());
-app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
+// app.use(helmet());
+// app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
-app.use(morgan("dev"));
+// app.use(morgan("dev"));
 
 // Router
 app.use("/api/v1", transactionRoutes);
