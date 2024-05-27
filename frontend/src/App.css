@@ -1,0 +1,32 @@
+.react-datepicker__input-container input {
+  border: none;
+  border-radius: 6px;
+  padding: 7.5px 10px 6.5px;
+}
+
+#bgimg {
+  position: fixed !important;
+  z-index: 0 !important;
+  top: 0px !important;
+  left: 0px !important;
+  right: 0px;
+  bottom: 0px;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none;
+  background-color: black;
+}
+
+#bgimg > img {
+  position: fixed !important;
+  z-index: 0 !important;
+  top: 0px !important;
+  left: 0px !important;
+  right: 0px;
+  bottom: 0px;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none;
+  object-fit: cover;
+  opacity: 0.4;
+}
