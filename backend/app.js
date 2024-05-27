@@ -14,7 +14,7 @@ const app = express();
 const port = process.env.PORT;
 
 await connectDB();
-app.use(cors({ origin: process.env.FRONTEND_URL }));
+app.use(cors());
 
 // Middleware
 app.use(express.json());
