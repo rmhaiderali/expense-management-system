@@ -118,10 +118,8 @@ const AdminHome = () => {
   };
 
   const downloadTransactions = (isPDF) => {
-    const captureTarget = document
-      .querySelector("#transactionsTable")
-      .outerHTML.replaceAll("text-white", "text-black")
-      .replaceAll("background: rgba(0, 0, 0, 0.7);", "");
+    const captureTarget =
+      document.querySelector("#transactionsTable").outerHTML;
 
     console.log(captureTarget);
 
