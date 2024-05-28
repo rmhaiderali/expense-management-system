@@ -156,5 +156,5 @@
 }
 
 .ant-image img {
-  object-fit: contain;
+  object-fit: cover;
 }

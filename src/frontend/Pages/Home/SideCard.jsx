@@ -37,7 +37,7 @@ export default function SideCard({
         }}
       >
         <span style={{ fontWeight: "bold" }}>
-          {isCardFullyOpen && "Transaction Details:"}
+          {isCardFullyOpen && "Info:"}
         </span>
         <svg
           xmlns="http://www.w3.org/2000/svg"

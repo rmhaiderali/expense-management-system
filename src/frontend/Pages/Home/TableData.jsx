@@ -162,8 +162,8 @@ const TableData = (props) => {
               <td>
                 <div>
                   <Image
-                    width={100}
-                    height={60}
+                    height={40}
+                    width={80}
                     src={`${host}/${item.image}`}
                   />
                 </div>
@@ -366,7 +366,9 @@ const TableData = (props) => {
           {transactions && (
             <tr>
               <td></td>
-              <td style={{ borderLeftColor: "transparent" }}></td>
+              {user?.UserType === "admin" && (
+                <td style={{ borderLeftColor: "transparent" }}></td>
+              )}
               <td style={{ borderLeftColor: "transparent" }}></td>
               <td style={{ borderLeftColor: "transparent" }}></td>
               <td style={{ borderLeftColor: "transparent" }}></td>
