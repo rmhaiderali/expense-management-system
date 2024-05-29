@@ -163,7 +163,10 @@ const AdminHome = () => {
       {loading ? (
         <Spinner />
       ) : (
-        <div style={{ display: "flex", padding: "10px" }}>
+        <div
+          style={{ display: "flex", padding: "10px" }}
+          className="mainContent"
+        >
           <SideCard
             transactions={transactions}
             frequency={frequency}

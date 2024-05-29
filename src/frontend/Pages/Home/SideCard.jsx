@@ -15,12 +15,13 @@ export default function SideCard({
 
   return (
     <div
-      className="card h-100"
+      className={"card h-100" + (isCardOpen ? " card-open" : "")}
       style={{
         minWidth: isCardOpen ? "280px" : "58px",
         maxWidth: isCardOpen ? "280px" : "58px",
         margin: "35px 10px 0 10px",
         transition: "min-width 0.3s ease",
+        overflow: "hidden",
       }}
     >
       <div
@@ -36,9 +37,7 @@ export default function SideCard({
             : "none",
         }}
       >
-        <span style={{ fontWeight: "bold" }}>
-          {isCardFullyOpen && "Info:"}
-        </span>
+        <span style={{ fontWeight: "bold" }}>{isCardFullyOpen && "Info:"}</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="26"

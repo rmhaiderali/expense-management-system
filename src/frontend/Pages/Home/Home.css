@@ -127,6 +127,14 @@
   right: 29px;
 }
 
+.transaction-details {
+  width: 100%;
+}
+
+.card-body{
+  overflow: auto;
+}
+
 .transaction-details tr th:last-child {
   font-weight: normal;
   padding: 5px 0;
@@ -157,4 +165,14 @@
 
 .ant-image img {
   object-fit: cover;
+}
+
+@media (max-width: 800px) {
+  .mainContent {
+    flex-wrap: wrap;
+  }
+  .mainContent > div:first-child.card-open {
+    min-width: calc(100% - 20px) !important;
+    max-width: calc(100% - 20px) !important;
+  }
 }
