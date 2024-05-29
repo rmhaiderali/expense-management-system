@@ -8,7 +8,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "start": "node src/backend/index.js",
-    "pm2": "pm2 start src/backend/index.js -n expense-management-system"
+    "pm2:s": "pm2 start src/backend/index.js -n expense-management-system",
+    "pm2:l": "pm2 logs expense-management-system --lines 500",
+    "pm2:d": "pm2 delete expense-management-system"
   },
   "dependencies": {
     "@mui/icons-material": "^5.11.16",
