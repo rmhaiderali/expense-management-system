@@ -242,7 +242,7 @@ const Register = () => {
                   </Form.Group>
                 </div>
 
-                {values.UserType === "user" && (
+                {/* {values.UserType === "user" && (
                   <div
                     className="mt-3"
                     style={{ display: "flex", gap: "1rem" }}
@@ -290,7 +290,7 @@ const Register = () => {
                       </datalist>
                     </Form.Group>
                   </div>
-                )}
+                )} */}
 
                 <div
                   style={{

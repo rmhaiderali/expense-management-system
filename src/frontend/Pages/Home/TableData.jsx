@@ -161,11 +161,7 @@ const TableData = (props) => {
               </td>
               <td>
                 <div>
-                  <Image
-                    height={40}
-                    width={80}
-                    src={`${host}/${item.image}`}
-                  />
+                  <Image height={40} width={80} src={`${host}/${item.image}`} />
                 </div>
               </td>
               <td>
@@ -374,10 +370,14 @@ const TableData = (props) => {
               <td style={{ borderLeftColor: "transparent" }}></td>
               <td style={{ borderLeftColor: "transparent" }}></td>
               <td>
-                <div>Total Amount</div>
+                <div>
+                  <b>Total Amount</b>
+                </div>
               </td>
               <td>
-                <div>{totalTurnOver}</div>
+                <div>
+                  <b>{totalTurnOver}</b>
+                </div>
               </td>
               <td></td>
               <td style={{ borderLeftColor: "transparent" }}></td>

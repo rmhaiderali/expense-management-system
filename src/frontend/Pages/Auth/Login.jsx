@@ -110,7 +110,7 @@ const Login = () => {
               />
             </h1>
             <h2 className="text-white text-center ">Login</h2>
-            <Form style={{ padding: "0 80px" }}>
+            <Form>
               <Form.Group controlId="formBasicEmail" className="mt-3">
                 <Form.Label className="text-white">Email address</Form.Label>
                 <InputGroup>

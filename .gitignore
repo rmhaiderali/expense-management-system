@@ -23,7 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 
+
 .env
+/ssl/*
+!/ssl/.gitkeep
 /temp/*
 !/temp/.gitkeep
 /uploads/*

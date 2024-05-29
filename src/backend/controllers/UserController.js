@@ -28,12 +28,12 @@ export const registerControllers = async (req, res, next) => {
       });
     }
 
-    if (UserType === "user" && (!city || !site_id)) {
-      return res.json({
-        success: false,
-        message: "Please enter All Fields",
-      });
-    }
+    // if (UserType === "user" && (!city || !site_id)) {
+    //   return res.json({
+    //     success: false,
+    //     message: "Please enter All Fields",
+    //   });
+    // }
 
     let user = await User.findOne({ email });
 
@@ -66,7 +66,7 @@ export const registerControllers = async (req, res, next) => {
         name,
         email,
         UserType,
-        ...(UserType === "user" ? { city, site_id } : {}),
+        // ...(UserType === "user" ? { city, site_id } : {}),
       },
       generateToken
     );
