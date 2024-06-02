@@ -118,8 +118,9 @@ const AdminHome = () => {
   };
 
   const downloadTransactions = (isPDF) => {
-    const captureTarget =
-      document.querySelector("#transactionsTable").outerHTML;
+    const captureTarget = document
+      .querySelector("#transactionsTable")
+      .outerHTML.replace("border-radius: 0.375rem", "");
 
     console.log(captureTarget);
 
@@ -129,6 +130,8 @@ const AdminHome = () => {
     capture.innerHTML = captureTarget;
 
     document.body.appendChild(capture);
+
+    capture.querySelector("#transactionsTable").style.display = "block";
 
     [
       capture.querySelector("thead > tr"),
@@ -183,6 +186,7 @@ const AdminHome = () => {
             }}
             className="mt-2"
           >
+            <div style={{ minWidth: "400px" }}></div>
             {/* <h1 className="text-white text-center">Welcome {cUser?.name}</h1> */}
             <div className="filterRow">
               <div className="text-white">

@@ -103,26 +103,18 @@ const Register = () => {
           }}
         >
           <Row>
-            <h1 className="text-center">
-              <img
-                src="/logo_for_dark_background.png"
-                style={{ height: 60, color: "white", marginBottom: 15 }}
-              />
-            </h1>
-            {/* <h1 className="text-center text-white">
-              Welcome to Expense Management System
-            </h1> */}
             <Col md={{ span: 6, offset: 3 }}>
-              <h2
-                className="text-white text-center"
-                style={{ marginBottom: "20px" }}
-              >
-                Registration
-              </h2>
+              <h1 className="text-center">
+                <img
+                  src="/logo_for_dark_background.png"
+                  style={{ height: 60, color: "white", marginBottom: 15 }}
+                />
+              </h1>
+              <h2 className="text-white text-center mb-4">Signup</h2>
               <Form>
                 <Form.Group controlId="formBasicEmail">
                   <div className="text-white ">
-                    Register As
+                    Signup As
                     <input
                       type="radio"
                       name="UserType"
@@ -312,7 +304,7 @@ const Register = () => {
                     onClick={!loading ? handleSubmit : null}
                     disabled={loading}
                   >
-                    {loading ? "Registering..." : "Signup"}
+                    Signup
                   </Button>
 
                   <p className="mt-3" style={{ color: "white" }}>

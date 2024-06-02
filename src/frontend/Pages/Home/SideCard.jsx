@@ -19,7 +19,7 @@ export default function SideCard({
       style={{
         minWidth: isCardOpen ? "280px" : "58px",
         maxWidth: isCardOpen ? "280px" : "58px",
-        margin: "35px 10px 0 10px",
+        margin: "35px 10px 10px 10px",
         transition: "min-width 0.3s ease",
         overflow: "hidden",
       }}
@@ -31,7 +31,7 @@ export default function SideCard({
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          background: "#9bd1ff",
+          background: "#9e9eff",
           borderBottom: isCardFullyOpen
             ? "var(--bs-card-border-width) solid var(--bs-card-border-color)"
             : "none",
@@ -88,7 +88,7 @@ export default function SideCard({
               </th>
             </tr>
             <tr>
-              <th>Total TurnOver:</th>
+              <th>Total Amount:</th>
               <th>{totalTurnOver}</th>
             </tr>
             <tr>

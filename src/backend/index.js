@@ -6,16 +6,19 @@ import fs from "fs";
 
 const port = process.env.PORT;
 
+const ssl_key_path = process.env.SSL_KEY_PATH || "ssl/key.pem";
+const ssl_cert_path = process.env.SSL_CERT_PATH || "ssl/cert.pem";
+
 if (
-  fs.existsSync("ssl/key.pem") &&
-  fs.existsSync("ssl/cert.pem") &&
+  fs.existsSync(ssl_key_path) &&
+  fs.existsSync(ssl_cert_path) &&
   port === "443"
 ) {
   https
     .createServer(
       {
-        key: fs.readFileSync("ssl/key.pem", "utf8"),
-        cert: fs.readFileSync("ssl/cert.pem", "utf8"),
+        key: fs.readFileSync(ssl_key_path, "utf8"),
+        cert: fs.readFileSync(ssl_cert_path, "utf8"),
       },
       app
     )

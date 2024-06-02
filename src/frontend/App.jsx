@@ -4,7 +4,7 @@ import Login from "./Pages/Auth/Login.jsx";
 import Register from "./Pages/Auth/Register.jsx";
 import Home from "./Pages/Home/Home.jsx";
 import SetAvatar from "./Pages/Avatar/setAvatar.jsx";
-import "./App.css";
+import "./App.scss";
 
 const App = () => {
   return (

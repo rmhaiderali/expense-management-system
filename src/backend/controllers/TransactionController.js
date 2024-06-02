@@ -128,7 +128,7 @@ export const getAllTransactionController = async (req, res) => {
 
     return res.json({
       success: true,
-      transactions: transactions,
+      transactions: transactions.toReversed(),
     });
   } catch (err) {
     return res.json({

@@ -246,6 +246,7 @@ const UserHome = () => {
             }}
             className="mt-2"
           >
+            <div style={{ minWidth: "400px" }}></div>
             {/* <h1 className="text-white text-center">Welcome {cUser?.name}</h1> */}
             <div className="filterRow">
               <div className="text-white">

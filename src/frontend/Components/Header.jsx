@@ -79,13 +79,13 @@ const Header = () => {
       {
         <div
           style={{
-            position: "absolute",
+            position: "fixed",
             display: "flex",
             width: "100%",
             height: "100%",
             zIndex: "1056",
             transition: "opacity 0.5s",
-            transform: "translate(0, -98px)",
+            transform: "translate(0, -97px)",
             background: "rgba(0, 0, 0, 0.5)",
             alignItems: "center",
             justifyContent: "center",

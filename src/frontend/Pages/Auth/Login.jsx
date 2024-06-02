@@ -109,7 +109,7 @@ const Login = () => {
                 style={{ height: 60, color: "white", marginBottom: 20 }}
               />
             </h1>
-            <h2 className="text-white text-center ">Login</h2>
+            <h2 className="text-white text-center">Login</h2>
             <Form>
               <Form.Group controlId="formBasicEmail" className="mt-3">
                 <Form.Label className="text-white">Email address</Form.Label>
@@ -168,7 +168,7 @@ const Login = () => {
                   onClick={!loading ? handleSubmit : null}
                   disabled={loading}
                 >
-                  {loading ? "Signin…" : "Login"}
+                  Login
                 </Button>
 
                 <p className="mt-3" style={{ color: "white" }}>
@@ -178,7 +178,7 @@ const Login = () => {
                     className="lnk"
                     style={{ color: "#0d6efd" }}
                   >
-                    Register
+                    Signup
                   </Link>
                 </p>
               </div>
