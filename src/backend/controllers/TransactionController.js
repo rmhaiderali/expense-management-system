@@ -126,9 +126,11 @@ export const getAllTransactionController = async (req, res) => {
       "-password"
     );
 
+    transactions.reverse();
+
     return res.json({
       success: true,
-      transactions: transactions.toReversed(),
+      transactions,
     });
   } catch (err) {
     return res.json({
