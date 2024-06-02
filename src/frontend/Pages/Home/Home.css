@@ -118,13 +118,13 @@
   margin-bottom: 20px;
 }
 
-@media (min-width: 800px) {
+@media (min-width: 801px) {
   #transactionsTableMobile {
     display: none;
   }
 }
 
-@media (max-width: 799px) {
+@media (max-width: 800px) {
   #transactionsTable {
     display: none;
   }
