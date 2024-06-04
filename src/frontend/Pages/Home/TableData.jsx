@@ -143,7 +143,9 @@ const TableData = (props) => {
               <tbody className="text-black">
                 {props?.data?.map((item, index) => (
                   <tr key={index}>
-                    {user?.UserType === "admin" && <td>{item.user.name}</td>}
+                    {user?.UserType === "admin" && (
+                      <td>{item.user?.name || "Deleted User"}</td>
+                    )}
                     <td>
                       <div>{moment(item.date).format("DD-MM-YYYY")}</div>
                     </td>
@@ -423,7 +425,7 @@ const TableData = (props) => {
                 {user?.UserType === "admin" && (
                   <tr>
                     <th>User</th>
-                    <th>{item.user.name}</th>
+                    <th>{item.user?.name || "Deleted User"}</th>
                   </tr>
                 )}
                 <tr>

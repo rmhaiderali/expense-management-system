@@ -4,7 +4,7 @@ import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { loginAPI, verifyEmailAPI } from "../../Utils/ApiRequest";
+import { loginAPI, approveAPI } from "../../Utils/ApiRequest";
 import { Eye, EyeSlash, Envelope, Key } from "react-bootstrap-icons";
 import InputGroup from "react-bootstrap/InputGroup";
 
@@ -28,7 +28,7 @@ const Login = () => {
 
       setLoading(true);
 
-      const { data } = await axios.post(verifyEmailAPI, {
+      const { data } = await axios.post(approveAPI, {
         emailToken,
       });
 
@@ -158,8 +158,8 @@ const Login = () => {
                 }}
                 className="mt-4"
               >
-                <Link to="/forgotPassword" className="text-white lnk">
-                  Forgot Password?
+                <Link to="/resetPassword" className="text-white lnk">
+                  Forgot password?
                 </Link>
 
                 <Button

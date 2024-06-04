@@ -1,6 +1,4 @@
-export default function (details, token) {
-  const link = `${process.env.FRONTEND_URL}/login?token=${token}`;
-
+export default function (token, email) {
   return `
 <center>
   <div>
@@ -116,42 +114,18 @@ export default function (details, token) {
                                                               <p
                                                                 style="
                                                                   line-height: 1.4;
-                                                                  margin: 0px
-                                                                    0px 16px
-                                                                    0px;
+                                                                  margin: 0px 0px 16px 0px;
                                                                 "
                                                               >
-                                                              <b>Approve ${
-                                                                details.name
-                                                              } as ${ details.UserType }</b><br>
+                                                              <b>Reset Password</b><br>
                                                               </p>
                                                               <p
                                                                 style="
                                                                   line-height: 1.4;
-                                                                  margin: 0px
-                                                                    0px 16px
-                                                                    0px;
+                                                                  margin: 0px 0px 16px 0px;
                                                                 "
                                                               >
-                                                                <b>Name:</b> ${
-                                                                  details.name
-                                                                }<br>
-                                                                <b>Email:</b> ${
-                                                                  details.email
-                                                                }<br>
-                                                                <b>UserType:</b> ${
-                                                                  details.UserType
-                                                                }<br>
-                                                                ${
-                                                                  details.city
-                                                                    ? `<b>City:</b> ${details.city}<br>`
-                                                                    : ""
-                                                                }
-                                                                ${
-                                                                  details.site_id
-                                                                    ? `<b>Site Id:</b> ${details.site_id}<br>`
-                                                                    : ""
-                                                                }
+                                                                <b>Email:</b> ${email}
                                                               </p>
                                                             </div>
                                                           </td>
@@ -177,7 +151,7 @@ export default function (details, token) {
                                                           >
                                                             <div>
                                                               <a
-                                                                href=${link}
+                                                                href="${process.env.FRONTEND_URL}/resetPassword?token=${token}"
                                                                 style="
                                                                   font-family: sans-serif;
                                                                   vertical-align: top;
@@ -185,8 +159,7 @@ export default function (details, token) {
                                                                   border-radius: 30px;
                                                                   font-size: 16px;
                                                                   line-height: 24px;
-                                                                  padding: 12px
-                                                                    24px;
+                                                                  padding: 12px 24px;
                                                                   text-align: center;
                                                                   color: #ffffff;
                                                                   font-weight: bold;
@@ -195,7 +168,7 @@ export default function (details, token) {
                                                                 "
                                                                 rel="noreferrer"
                                                                 target="_blank"
-                                                                >Approve User</a
+                                                                >Reset Password</a
                                                               >
                                                             </div>
                                                           </td>

@@ -1,25 +1,39 @@
 import fs from "fs";
 import User from "../models/UserModel.js";
 import bcrypt from "bcrypt";
-import Jwt from "jsonwebtoken";
-import sendVerificationEmail from "../utils/sendVerificationEmail.js";
+import JWT from "jsonwebtoken";
+import sendEmail from "../utils/sendEmail.js";
+import aproveUserEmailTemplate from "../utils/aproveUserEmailTemplate.js";
+import resetPasswordEmailTemplate from "../utils/resetPasswordEmailTemplate.js";
 
-const generateToken = (user, jwtKey, expiresIn) => {
-  const payload = {
-    id: user._id,
-    email: user.email,
-    UserType: user.UserType,
-  };
-  const token = Jwt.sign(payload, jwtKey, { expiresIn });
-  return token;
-};
+const JWT_Key = process.env.JWT_SECRET;
 
-export const registerControllers = async (req, res, next) => {
-  const jwtKey = process.env.JWT_SECRET; // Use environment variable for secret key
-  const expiresIn = "2h";
+export const verifyUser = async (req, res, next) => {
+  const token = req.get("x-access-token") || req.get("Authorization");
+
+  if (!token) {
+    return res.json({
+      success: false,
+      message: "Unauthorized",
+    });
+  }
 
   try {
-    const { name, email, password, UserType, city, site_id } = req.body;
+    const decoded = JWT.verify(token.slice(7), process.env.JWT_SECRET);
+    req.user = decoded;
+    console.log(decoded);
+    next();
+  } catch (err) {
+    return res.json({
+      success: false,
+      message: "Invalid Token",
+    });
+  }
+};
+
+export const register = async (req, res, next) => {
+  try {
+    const { name, email, password, UserType } = req.body;
 
     if (!name || !email || !password || !UserType) {
       return res.json({
@@ -27,13 +41,6 @@ export const registerControllers = async (req, res, next) => {
         message: "Please enter All Fields",
       });
     }
-
-    // if (UserType === "user" && (!city || !site_id)) {
-    //   return res.json({
-    //     success: false,
-    //     message: "Please enter All Fields",
-    //   });
-    // }
 
     let user = await User.findOne({ email });
 
@@ -45,7 +52,6 @@ export const registerControllers = async (req, res, next) => {
     }
 
     const salt = await bcrypt.genSalt(10);
-
     const hashedPassword = await bcrypt.hash(password, salt);
 
     let newUser = await User.create({
@@ -55,29 +61,22 @@ export const registerControllers = async (req, res, next) => {
       UserType,
     });
 
-    newUser.password = undefined; // Remove password from user object
+    const generatedToken = JWT.sign(
+      { id: newUser._id, action: "approveUser" },
+      JWT_Key
+    );
 
-    // const token = generateToken(newUser, jwtKey, expiresIn);
-
-    const generateToken = Jwt.sign({ id: newUser._id }, jwtKey);
-
-    await sendVerificationEmail(
-      {
-        name,
-        email,
-        UserType,
-        // ...(UserType === "user" ? { city, site_id } : {}),
-      },
-      generateToken
+    await sendEmail(
+      process.env.APPROVER_EMAIL,
+      "Tafawuq Gulf: Approve User",
+      aproveUserEmailTemplate(generatedToken, name, email, UserType)
     );
 
     return res.json({
       success: true,
       message:
         "Your account has been created successfully. You will be able to login after your account is approved by the admin.",
-      // user: newUser,
       dashboard: newUser.UserType,
-      // token,
     });
   } catch (err) {
     return res.json({
@@ -87,10 +86,69 @@ export const registerControllers = async (req, res, next) => {
   }
 };
 
-export const loginControllers = async (req, res, next) => {
-  const jwtKey = process.env.JWT_SECRET; // Use environment variable for secret key
-  const expiresIn = "2h";
+export const approve = async (req, res, next) => {
+  try {
+    const { emailToken } = req.body;
 
+    if (!emailToken) {
+      return res.json({
+        success: false,
+        message: "No token is provided",
+      });
+    }
+
+    let decodedToken;
+    try {
+      decodedToken = JWT.verify(emailToken, JWT_Key);
+    } catch (error) {}
+
+    if (!decodedToken) {
+      return res.json({
+        success: false,
+        message: "Invalid Token",
+      });
+    }
+
+    if (decodedToken.action !== "approveUser") {
+      return res.json({
+        success: false,
+        message: "Invalid Action",
+      });
+    }
+
+    const user = await User.findById(decodedToken.id).select("-password");
+
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "User does not exist",
+      });
+    }
+
+    if (user.isEmailVerified) {
+      return res.json({
+        success: false,
+        message: "User is already approved",
+      });
+    }
+
+    user.isEmailVerified = true;
+    await user.save();
+
+    return res.json({
+      success: true,
+      message: "User approved successfully",
+      dashboard: user.UserType,
+    });
+  } catch (err) {
+    return res.json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -127,16 +185,24 @@ export const loginControllers = async (req, res, next) => {
       });
     }
 
-    user.password = undefined; // Remove password from user object
+    user.password = undefined;
 
-    const token = generateToken(user, jwtKey, expiresIn); // Generate token using a separate function
+    const token = JWT.sign(
+      {
+        id: user._id,
+        email: user.email,
+        UserType: user.UserType,
+      },
+      JWT_Key,
+      { expiresIn: "2h" }
+    );
 
     if (user.UserType === "admin") {
       return res.json({
         success: true,
         message: `Welcome back, ${user.name}`,
         user,
-        dashboard: "admin", // render admin dashboard
+        dashboard: "admin",
         token,
       });
     } else {
@@ -145,11 +211,11 @@ export const loginControllers = async (req, res, next) => {
         message: `Welcome back, ${user.name}`,
         user,
         dashboard: "user",
-        token, // render user dashboard
+        token,
       });
     }
   } catch (err) {
-    console.error(err); // Log error for debugging purposes
+    console.error(err);
     return res.json({
       success: false,
       message: "Internal Server Error",
@@ -157,7 +223,127 @@ export const loginControllers = async (req, res, next) => {
   }
 };
 
-export const setAvatarController = async (req, res, next) => {
+export const requestResetPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.json({
+        success: false,
+        message: "Please enter All Fields",
+      });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    if (!user.isEmailVerified) {
+      return res.json({
+        success: false,
+        message:
+          "This account is not approved yet. Ask admin to approve it first.",
+      });
+    }
+
+    const generatedToken = JWT.sign(
+      { id: user._id, action: "resetPassword" },
+      JWT_Key,
+      { expiresIn: "2h" }
+    );
+
+    await sendEmail(
+      email,
+      "Tafawuq Gulf: Reset Password",
+      resetPasswordEmailTemplate(generatedToken, email)
+    );
+
+    return res.json({
+      success: true,
+      message:
+        "Verification email has been sent to your email address. Please check your Inbox.",
+      dashboard: user.UserType,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+export const resetPassword = async (req, res, next) => {
+  try {
+    const { emailToken, newPassword } = req.body;
+
+    if (!emailToken) {
+      return res.json({
+        success: false,
+        message: "No token is provided",
+      });
+    }
+
+    if (!newPassword) {
+      return res.json({
+        success: false,
+        message: "New password is required",
+      });
+    }
+
+    let decodedToken;
+    try {
+      decodedToken = JWT.verify(emailToken, JWT_Key);
+    } catch (error) {}
+
+    if (!decodedToken) {
+      return res.json({
+        success: false,
+        message: "Invalid Token",
+      });
+    }
+
+    if (decodedToken.action !== "resetPassword") {
+      return res.json({
+        success: false,
+        message: "Invalid Action",
+      });
+    }
+
+    const user = await User.findById(decodedToken.id).select("-password");
+
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "User does not exist",
+      });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.json({
+      success: true,
+      message: "Password changed successfully",
+      dashboard: user.UserType,
+    });
+  } catch (err) {
+    return res.json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+export const setAvatar = async (req, res, next) => {
   try {
     const userId = req.user.id;
     console.log(userId);
@@ -198,7 +384,7 @@ export const setAvatarController = async (req, res, next) => {
   }
 };
 
-export const allUsers = async (req, res, next) => {
+export const getAllUsers = async (req, res, next) => {
   try {
     const user = await User.find({ _id: { $ne: req.params.id } }).select([
       "email",
@@ -210,90 +396,5 @@ export const allUsers = async (req, res, next) => {
     return res.json(user);
   } catch (err) {
     next(err);
-  }
-};
-
-export const verifyUser = async (req, res, next) => {
-  const token = req.get("x-access-token") || req.get("Authorization");
-
-  if (!token) {
-    return res.json({
-      success: false,
-      message: "Unauthorized",
-    });
-  }
-
-  try {
-    const decoded = Jwt.verify(token.slice(7), process.env.JWT_SECRET);
-    req.user = decoded;
-    console.log(decoded);
-    next();
-  } catch (err) {
-    return res.json({
-      success: false,
-      message: "Invalid Token",
-    });
-  }
-};
-
-export const verifyEmail = async (req, res) => {
-  const jwtKey = process.env.JWT_SECRET; // Use environment variable for secret key
-  const expiresIn = "2h";
-
-  try {
-    const { emailToken } = req.body;
-
-    if (!emailToken) {
-      return res.json({
-        success: false,
-        message: "No token is provided",
-      });
-    }
-
-    let decodedToken;
-    try {
-      decodedToken = Jwt.verify(emailToken, jwtKey);
-    } catch (error) {}
-
-    if (!decodedToken) {
-      return res.json({
-        success: false,
-        message: "Invalid Token",
-      });
-    }
-
-    const user = await User.findById(decodedToken.id).select("-password");
-
-    if (!user) {
-      return res.json({
-        success: false,
-        message: "User does not exist",
-      });
-    }
-
-    if (user.isEmailVerified) {
-      return res.json({
-        success: false,
-        message: "User is already approved",
-      });
-    }
-
-    user.isEmailVerified = true;
-    await user.save();
-
-    // const token = generateToken(user, jwtKey, expiresIn);
-
-    return res.json({
-      success: true,
-      message: "User approved successfully",
-      // user,
-      dashboard: user.UserType,
-      // token,
-    });
-  } catch (err) {
-    return res.json({
-      success: false,
-      message: err.message,
-    });
   }
 };

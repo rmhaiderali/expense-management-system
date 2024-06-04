@@ -1,8 +1,7 @@
 import nodemailer from "nodemailer";
-import emailTemplate from "./emailTemplate.js";
 
-export default async function (details, token) {
-  console.log({ token, details });
+export default async function (to, title, body) {
+  console.log({ title, body });
 
   let transporter = nodemailer.createTransport({
     service: "gmail",
@@ -20,15 +19,12 @@ export default async function (details, token) {
     },
   });
 
-  let mailOptions = {
+  const mailOptions = {
     from: process.env.EMAIL_ADDRESS,
-    to: process.env.APPROVER_EMAIL,
-    subject:
-      "Tafawuq Gulf: Approve " + details.name + " as " + details.UserType,
-    html: emailTemplate(details, token),
+    to: to,
+    subject: title,
+    html: body,
   };
-
-  // send otp to email
 
   const sendMail = new Promise((resolve) => {
     transporter.sendMail(mailOptions, async function (error, info) {

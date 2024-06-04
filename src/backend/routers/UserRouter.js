@@ -1,24 +1,28 @@
 import express from "express";
 import multer from "multer";
 import {
-  loginControllers,
-  registerControllers,
-  setAvatarController,
   verifyUser,
-  verifyEmail,
+  login,
+  register,
+  setAvatar,
+  approve,
+  requestResetPassword,
+  resetPassword,
 } from "../controllers/UserController.js";
 
 const upload = multer({ dest: "temp/" });
 const router = express.Router();
 
-router.route("/register").post(registerControllers);
+router.route("/register").post(register);
 
-router.route("/login").post(loginControllers);
+router.route("/approve").post(approve);
 
-router.route("/verifyEmail").post(verifyEmail);
+router.route("/login").post(login);
 
-router
-  .route("/setAvatar")
-  .post(verifyUser, upload.single("image"), setAvatarController);
+router.route("/requestResetPassword").post(requestResetPassword);
+
+router.route("/resetPassword").post(resetPassword);
+
+router.route("/setAvatar").post(verifyUser, upload.single("image"), setAvatar);
 
 export default router;

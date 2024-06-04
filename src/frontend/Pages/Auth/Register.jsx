@@ -294,9 +294,9 @@ const Register = () => {
                   }}
                   className="mt-4"
                 >
-                  <Link to="/forgotPassword" className="text-white lnk">
-                    Forgot Password?
-                  </Link>
+                  {/* <Link to="/resetPassword" className="text-white lnk">
+                    Forgot password?
+                  </Link> */}
 
                   <Button
                     type="submit"
