@@ -185,6 +185,17 @@ const ResetPassword = () => {
                 >
                   {emailToken ? "Reset Password" : "Send Email"}
                 </Button>
+
+                <p className="mt-3" style={{ color: "white" }}>
+                  Remember account password?{" "}
+                  <Link
+                    to="/login"
+                    className="lnk"
+                    style={{ color: "#0d6efd" }}
+                  >
+                    Login
+                  </Link>
+                </p>
               </div>
             </Form>
           </Col>
