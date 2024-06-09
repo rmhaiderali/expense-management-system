@@ -10,7 +10,7 @@ const Analytics = ({ transactions }) => {
   );
 
   return (
-    <div style={{ display: "flex", gap: "20px" }}>
+    <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
       <div className="card">
         <div
           className="card-header text-black"
