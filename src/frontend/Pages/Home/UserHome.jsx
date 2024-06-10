@@ -315,7 +315,10 @@ const UserHome = () => {
               )} */}
 
               <div className="half">
-                <Button onClick={handleShow} style={{ marginTop: "32px", width: "100%" }}>
+                <Button
+                  onClick={handleShow}
+                  style={{ marginTop: "32px", width: "100%" }}
+                >
                   + Add Item
                 </Button>
                 <Modal show={show} onHide={handleClose} centered>

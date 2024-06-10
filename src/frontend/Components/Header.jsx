@@ -23,6 +23,15 @@ const Header = () => {
     }
   }, []);
 
+  useEffect(() => {
+    document
+      .querySelector(".App")
+      ?.style.setProperty(
+        "--username",
+        document.querySelector(".username")?.clientWidth + "px"
+      );
+  }, [user]);
+
   const handleShowLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
@@ -53,7 +62,10 @@ const Header = () => {
             ></img>
           </Navbar.Brand>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <span style={{ color: "white", padding: "4px 20px 0 0" }}>
+            <span
+              className="username"
+              style={{ color: "white", padding: "4px 20px 0 0" }}
+            >
               {user?.name}
             </span>
             <img

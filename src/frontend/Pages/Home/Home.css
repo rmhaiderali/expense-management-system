@@ -221,7 +221,7 @@
 @media (min-width: 940px) {
   .filterRow {
     height: 0;
-    transform: translate(-200px, -95px);
+    transform: translate(calc((var(--username) + 75px) * -1), -95px);
   }
 }
 
