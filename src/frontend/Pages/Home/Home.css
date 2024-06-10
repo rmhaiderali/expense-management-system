@@ -217,3 +217,20 @@
 .table > :not(caption) > tr:last-child > td {
   border-bottom-width: 0;
 }
+
+@media (min-width: 940px) {
+  .filterRow {
+    height: 0;
+    transform: translate(-200px, -95px);
+  }
+}
+
+@media (max-width: 626px) {
+  .filterRow .half {
+    width: calc(50% - 10px);
+  }
+
+  .filterRow .full {
+    width: calc(100%);
+  }
+}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Container } from "react-bootstrap";
 import "./Home.css";
@@ -14,19 +14,40 @@ import Analytics from "./Analytics";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import SideCard from "./SideCard";
+import { toast } from "react-toastify";
 
 const AdminHome = () => {
+  const toastOptions = {
+    position: "bottom-right",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
+  };
   const navigate = useNavigate();
 
   const [cUser, setcUser] = useState();
   const [loading, setLoading] = useState(false);
   const [transactions, setTransactions] = useState([]);
   const [refresh, setRefresh] = useState(false);
-  const [frequency, setFrequency] = useState("7");
+  const [frequency, setFrequency] = useState("1");
   const [type, setType] = useState("all");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [view, setView] = useState("table");
+  const [filteredTransactions, setFilteredTransactions] = useState([]);
+  const [filterKeyword, setFilterKeyword] = useState("");
+
+  useEffect(() => {
+    setFilteredTransactions(
+      transactions.filter((t) =>
+        t.user?.name.toLowerCase().includes(filterKeyword.toLowerCase())
+      )
+    );
+  }, [transactions, filterKeyword]);
 
   const handleStartChange = (date) => {
     setStartDate(date);
@@ -117,47 +138,57 @@ const AdminHome = () => {
     setView("chart");
   };
 
+  function getImageDimensions(src) {
+    return new Promise(function (resolve) {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => resolve({ w: img.width, h: img.height });
+    });
+  }
+
   const downloadTransactions = (isPDF) => {
-    const captureTarget = document
-      .querySelector("#transactionsTable")
-      .outerHTML.replace("border-radius: 0.375rem", "");
-
-    console.log(captureTarget);
-
     const capture = document.createElement("div");
-    capture.style.minWidth = "1000px";
-    capture.style.maxWidth = "1000px";
-    capture.innerHTML = captureTarget;
-
     document.body.appendChild(capture);
 
-    capture.querySelector("#transactionsTable").style.display = "block";
+    try {
+      capture.style.minWidth = "1000px";
+      capture.style.maxWidth = "1000px";
 
-    [
-      capture.querySelector("thead > tr"),
-      ...capture.querySelectorAll("tbody > tr"),
-    ].map((e) => e.removeChild(e.lastChild));
+      capture.innerHTML = document
+        .querySelector("#transactionsTable")
+        .outerHTML.replace("border-radius: 0.375rem", "");
 
-    html2canvas(capture, { useCORS: true, allowTaint: true, scale: 2 }).then(
-      (canvas) => {
-        if (isPDF) {
-          const pdf = new jsPDF("p", "px", [
-            capture.clientHeight < 1100 ? 1100 : capture.clientHeight,
-            1100,
-          ]);
-          pdf.addImage(canvas.toDataURL({ format: "png" }), "PNG", 0, 0);
-          pdf.save("transactions.pdf");
+      capture.querySelector(".pdftable").style.display = "block";
+
+      [
+        capture.querySelector("thead > tr"),
+        ...capture.querySelectorAll("tbody > tr"),
+      ].map((e) => e.removeChild(e.lastChild));
+
+      html2canvas(capture, { useCORS: true, allowTaint: true, scale: 2 }).then(
+        async (canvas) => {
+          const image = canvas.toDataURL({ format: "png" });
+          const size = await getImageDimensions(image);
+
+          if (isPDF) {
+            const orientation = size.w > size.h ? "l" : "p";
+            const pdf = new jsPDF(orientation, "px", [size.w / 4, size.h / 4]);
+            pdf.addImage(image, "PNG", 0, 0, size.w / 4, size.h / 4);
+            pdf.save("transactions.pdf");
+          }
+          //
+          else {
+            let a = document.createElement("a");
+            a.href = image;
+            a.download = "transactions.png";
+            a.click();
+          }
         }
-        //
-        else {
-          let a = document.createElement("a");
-          a.href = canvas.toDataURL({ format: "png" });
-          a.download = "transactions.png";
-          a.click();
-        }
-      }
-    );
-
+      );
+    } catch (error) {
+      console.error(error);
+      toast.error("Unable to genrate PDF", toastOptions);
+    }
     document.body.removeChild(capture);
   };
 
@@ -189,7 +220,19 @@ const AdminHome = () => {
             <div style={{ minWidth: "400px" }}></div>
             {/* <h1 className="text-white text-center">Welcome {cUser?.name}</h1> */}
             <div className="filterRow">
-              <div className="text-white">
+              <div className="text-white half">
+                <Form.Group controlId="formSelectFrequency">
+                  <Form.Label>Search by User</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={filterKeyword}
+                    placeholder="Enter Username"
+                    onChange={(e) => setFilterKeyword(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+              </div>
+
+              <div className="text-white half">
                 <Form.Group controlId="formSelectFrequency">
                   <Form.Label>Select Frequency</Form.Label>
                   <Form.Select
@@ -197,15 +240,16 @@ const AdminHome = () => {
                     value={frequency}
                     onChange={handleChangeFrequency}
                   >
+                    <option value="1">Today</option>
                     <option value="7">Last Week</option>
                     <option value="30">Last Month</option>
                     <option value="365">Last Year</option>
-                    <option value="custom">Custom</option>
+                    {/* <option value="custom">Custom</option> */}
                   </Form.Select>
                 </Form.Group>
               </div>
 
-              {frequency === "custom" && (
+              {/* {frequency === "custom" && (
                 <div style={{ marginTop: "32px" }}>
                   <DatePicker
                     selected={startDate}
@@ -251,7 +295,7 @@ const AdminHome = () => {
                     view === "chart" ? "iconActive" : "iconDeactive"
                   }`}
                 />
-              </div>
+              </div> */}
 
               {/* {transactions?.length > 0 && view === "table" && (
                 <Button
@@ -265,6 +309,7 @@ const AdminHome = () => {
 
               {transactions?.length > 0 && view === "table" && (
                 <Button
+                  className="full"
                   variant="primary"
                   style={{ marginTop: "32px" }}
                   onClick={() => downloadTransactions(true)}
@@ -275,7 +320,11 @@ const AdminHome = () => {
             </div>
 
             {view === "table" ? (
-              <TableData data={transactions} user={cUser} />
+              <TableData
+                data={filteredTransactions}
+                user={cUser}
+                key={filterKeyword}
+              />
             ) : (
               <Analytics transactions={transactions} user={cUser} />
             )}

@@ -43,7 +43,7 @@ const Header = () => {
             position: "relative",
             zIndex: "2 !important",
             flexWrap: "nowrap",
-            padding: "15px 20px",
+            padding: "15px 20px 0",
           }}
         >
           <Navbar.Brand href="/" className="text-white navTitle">
@@ -85,7 +85,7 @@ const Header = () => {
             height: "100%",
             zIndex: "1056",
             transition: "opacity 0.5s",
-            transform: "translate(0, -97px)",
+            transform: "translate(0, -82px)",
             background: "rgba(0, 0, 0, 0.5)",
             alignItems: "center",
             justifyContent: "center",

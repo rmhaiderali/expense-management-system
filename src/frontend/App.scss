@@ -2,6 +2,10 @@ $primary: #9e9eff;
 $danger: #ff9e9e;
 @import "bootstrap";
 
+.form-label {
+  margin: 0.25rem 0;
+}
+
 .react-datepicker__input-container input {
   border: none;
   border-radius: 6px;

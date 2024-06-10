@@ -32,7 +32,7 @@ const UserHome = () => {
   const [loading, setLoading] = useState(false);
   const [transactions, setTransactions] = useState([]);
   const [refresh, setRefresh] = useState(false);
-  const [frequency, setFrequency] = useState("7");
+  const [frequency, setFrequency] = useState("1");
   const [type, setType] = useState("all");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -249,7 +249,7 @@ const UserHome = () => {
             <div style={{ minWidth: "400px" }}></div>
             {/* <h1 className="text-white text-center">Welcome {cUser?.name}</h1> */}
             <div className="filterRow">
-              <div className="text-white">
+              <div className="text-white half">
                 <Form.Group controlId="formSelectFrequency">
                   <Form.Label>Select Frequency</Form.Label>
                   <Form.Select
@@ -257,15 +257,16 @@ const UserHome = () => {
                     value={frequency}
                     onChange={handleChangeFrequency}
                   >
+                    <option value="1">Today</option>
                     <option value="7">Last Week</option>
                     <option value="30">Last Month</option>
                     <option value="365">Last Year</option>
-                    <option value="custom">Custom</option>
+                    {/* <option value="custom">Custom</option> */}
                   </Form.Select>
                 </Form.Group>
               </div>
 
-              <div
+              {/* <div
                 className="text-white iconBtnBox"
                 style={{ marginTop: "32px" }}
               >
@@ -311,10 +312,10 @@ const UserHome = () => {
                     style={{ marginTop: "32px" }}
                   />
                 </div>
-              )}
+              )} */}
 
-              <div>
-                <Button onClick={handleShow} style={{ marginTop: "32px" }}>
+              <div className="half">
+                <Button onClick={handleShow} style={{ marginTop: "32px", width: "100%" }}>
                   + Add Item
                 </Button>
                 <Modal show={show} onHide={handleClose} centered>

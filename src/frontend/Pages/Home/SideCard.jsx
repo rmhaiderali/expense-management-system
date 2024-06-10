@@ -6,8 +6,8 @@ export default function SideCard({
   startDate,
   endDate,
 }) {
-  const [isCardOpen, setIsCardOpen] = useState(true);
-  const [isCardFullyOpen, setIsCardFullyOpen] = useState(true);
+  const [isCardOpen, setIsCardOpen] = useState(false);
+  const [isCardFullyOpen, setIsCardFullyOpen] = useState(false);
 
   const totalTurnOver =
     transactions?.reduce((acc, transaction) => acc + transaction.amount, 0) ||
