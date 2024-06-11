@@ -110,11 +110,11 @@ export const getAllTransactionController = async (req, res) => {
     }
 
     // Add date conditions based on 'frequency' and 'custom' range
-    if (frequency !== "custom") {
+    if (frequency.match(/^\d+$/)) {
       query.date = {
         $gt: moment().subtract(Number(frequency), "days").toDate(),
       };
-    } else if (startDate && endDate) {
+    } else if (frequency === "custom" && startDate && endDate) {
       query.date = {
         $gte: moment(startDate).toDate(),
         $lte: moment(endDate).toDate(),

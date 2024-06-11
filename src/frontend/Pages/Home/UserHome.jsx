@@ -32,7 +32,7 @@ const UserHome = () => {
   const [loading, setLoading] = useState(false);
   const [transactions, setTransactions] = useState([]);
   const [refresh, setRefresh] = useState(false);
-  const [frequency, setFrequency] = useState("1");
+  const [frequency, setFrequency] = useState("none");
   const [type, setType] = useState("all");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -257,6 +257,7 @@ const UserHome = () => {
                     value={frequency}
                     onChange={handleChangeFrequency}
                   >
+                    <option value="none">All</option>
                     <option value="1">Today</option>
                     <option value="7">Last Week</option>
                     <option value="30">Last Month</option>
