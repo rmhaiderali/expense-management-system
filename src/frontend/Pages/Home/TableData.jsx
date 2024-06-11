@@ -113,7 +113,7 @@ const TableData = (props) => {
   const [DCTransaction, setDCTransaction] = useState(0);
 
   const mobileItems = 1;
-  const desktopItems = 10;
+  const desktopItems = 1;
 
   const totalTurnOver =
     transactions?.reduce((acc, transaction) => acc + transaction.amount, 0) ||
@@ -749,22 +749,64 @@ const TableData = (props) => {
                 </Table>
               </div>
             </div>
-            <div style={{ display: "flex", justifyContent: "center" }}>
+            <div
+              style={{ display: "flex", justifyContent: "center", gap: "15px" }}
+            >
               <Button
                 variant="primary"
-                style={{ marginRight: "15px" }}
                 onClick={() => setDCTransaction(DCTransaction - desktopItems)}
                 disabled={DCTransaction === 0}
               >
-                Previous
+                {"<"}
               </Button>
+              {DCTransaction / desktopItems > 1 && (
+                <Button variant="primary" onClick={() => setDCTransaction(0)}>
+                  1
+                </Button>
+              )}
+              {DCTransaction !== 0 && (
+                <Button
+                  variant="primary"
+                  onClick={() => setDCTransaction(DCTransaction - desktopItems)}
+                >
+                  {DCTransaction / desktopItems}
+                </Button>
+              )}
+              <Button className="fullopacity" variant="success" disabled>
+                {DCTransaction / desktopItems + 1}
+              </Button>
+              {DCTransaction + desktopItems < transactions.length && (
+                <Button
+                  variant="primary"
+                  onClick={() =>
+                    setDCTransaction(
+                      (DCTransaction / desktopItems + 1) * desktopItems
+                    )
+                  }
+                >
+                  {DCTransaction / desktopItems + 2}
+                </Button>
+              )}
+              {DCTransaction / desktopItems <
+                Math.ceil(transactions.length / desktopItems) - 2 && (
+                <Button
+                  variant="primary"
+                  onClick={() =>
+                    setDCTransaction(
+                      (Math.ceil(transactions.length / desktopItems) - 1) *
+                        desktopItems
+                    )
+                  }
+                >
+                  {Math.ceil(transactions.length / desktopItems)}
+                </Button>
+              )}
               <Button
                 variant="primary"
-                style={{ width: "85px" }}
                 onClick={() => setDCTransaction(DCTransaction + desktopItems)}
                 disabled={DCTransaction + desktopItems >= transactions.length}
               >
-                Next
+                {">"}
               </Button>
             </div>
           </>
@@ -1051,22 +1093,70 @@ const TableData = (props) => {
                 </div>
               </div>
             ))}
-            <div style={{ display: "flex", justifyContent: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "15px",
+                flexWrap: "wrap",
+              }}
+            >
               <Button
                 variant="primary"
-                style={{ marginRight: "15px" }}
                 onClick={() => setMCTransaction(MCTransaction - mobileItems)}
                 disabled={MCTransaction === 0}
               >
-                Previous
+                {"<"}
               </Button>
+              {MCTransaction / mobileItems > 1 && (
+                <Button variant="primary" onClick={() => setMCTransaction(0)}>
+                  1
+                </Button>
+              )}
+              {MCTransaction !== 0 && (
+                <Button
+                  variant="primary"
+                  onClick={() => setMCTransaction(MCTransaction - mobileItems)}
+                >
+                  {MCTransaction / mobileItems}
+                </Button>
+              )}
+              <Button className="fullopacity" variant="success" disabled>
+                {MCTransaction / mobileItems + 1}
+              </Button>
+
+              {MCTransaction + mobileItems < transactions.length && (
+                <Button
+                  variant="primary"
+                  onClick={() =>
+                    setMCTransaction(
+                      (MCTransaction / mobileItems + 1) * mobileItems
+                    )
+                  }
+                >
+                  {MCTransaction / mobileItems + 2}
+                </Button>
+              )}
+              {MCTransaction / mobileItems <
+                Math.ceil(transactions.length / mobileItems) - 2 && (
+                <Button
+                  variant="primary"
+                  onClick={() =>
+                    setMCTransaction(
+                      (Math.ceil(transactions.length / mobileItems) - 1) *
+                        mobileItems
+                    )
+                  }
+                >
+                  {Math.ceil(transactions.length / mobileItems)}
+                </Button>
+              )}
               <Button
                 variant="primary"
-                style={{ width: "85px" }}
                 onClick={() => setMCTransaction(MCTransaction + mobileItems)}
                 disabled={MCTransaction + mobileItems >= transactions.length}
               >
-                Next
+                {">"}
               </Button>
             </div>
           </>
