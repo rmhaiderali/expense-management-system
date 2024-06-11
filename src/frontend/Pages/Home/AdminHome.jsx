@@ -171,9 +171,10 @@ const AdminHome = () => {
           const size = await getImageDimensions(image);
 
           if (isPDF) {
-            const orientation = size.w > size.h ? "l" : "p";
-            const pdf = new jsPDF(orientation, "px", [size.w / 4, size.h / 4]);
-            pdf.addImage(image, "PNG", 0, 0, size.w / 4, size.h / 4);
+            const w = size.w / 4;
+            const h = size.h / 4;
+            const pdf = new jsPDF(w > h ? "l" : "p", "px", [w, h]);
+            pdf.addImage(image, "PNG", 0, 0, w, h);
             pdf.save("transactions.pdf");
           }
           //

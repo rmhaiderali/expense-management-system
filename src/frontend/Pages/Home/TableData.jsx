@@ -113,7 +113,7 @@ const TableData = (props) => {
   const [DCTransaction, setDCTransaction] = useState(0);
 
   const mobileItems = 1;
-  const desktopItems = 10;
+  const desktopItems = 20;
 
   const totalTurnOver =
     transactions?.reduce((acc, transaction) => acc + transaction.amount, 0) ||
