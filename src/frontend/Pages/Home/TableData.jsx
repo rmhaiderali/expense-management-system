@@ -113,7 +113,7 @@ const TableData = (props) => {
   const [DCTransaction, setDCTransaction] = useState(0);
 
   const mobileItems = 1;
-  const desktopItems = 1;
+  const desktopItems = 10;
 
   const totalTurnOver =
     transactions?.reduce((acc, transaction) => acc + transaction.amount, 0) ||
@@ -772,7 +772,7 @@ const TableData = (props) => {
                   {DCTransaction / desktopItems}
                 </Button>
               )}
-              <Button className="fullopacity" variant="success" disabled>
+              <Button className="fullopacity" variant="warning" disabled>
                 {DCTransaction / desktopItems + 1}
               </Button>
               {DCTransaction + desktopItems < transactions.length && (
@@ -1121,7 +1121,7 @@ const TableData = (props) => {
                   {MCTransaction / mobileItems}
                 </Button>
               )}
-              <Button className="fullopacity" variant="success" disabled>
+              <Button className="fullopacity" variant="warning" disabled>
                 {MCTransaction / mobileItems + 1}
               </Button>
 
