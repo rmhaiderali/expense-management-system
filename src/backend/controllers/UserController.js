@@ -35,6 +35,8 @@ export const register = async (req, res, next) => {
   try {
     const { name, email, password, UserType } = req.body;
 
+    UserType = "user";
+
     if (!name || !email || !password || !UserType) {
       return res.json({
         success: false,

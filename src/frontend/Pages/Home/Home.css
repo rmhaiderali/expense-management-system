@@ -218,14 +218,14 @@
   border-bottom-width: 0;
 }
 
-@media (min-width: 940px) {
+@media (min-width: 1150px) {
   .filterRow {
     height: 0;
     transform: translate(calc((var(--username) + 75px) * -1), -95px);
   }
 }
 
-@media (max-width: 626px) {
+@media (max-width: 706px) {
   .filterRow .half {
     width: calc(50% - 10px);
   }

@@ -123,6 +123,11 @@ const Login = () => {
                     name="email"
                     onChange={handleChange}
                     value={values.email}
+                    style={
+                      values.email.match(/[A-Z]/) && {
+                        boxShadow: "0 0 0 0.25rem rgba(255, 0, 0, 0.4)",
+                      }
+                    }
                   />
                 </InputGroup>
               </Form.Group>

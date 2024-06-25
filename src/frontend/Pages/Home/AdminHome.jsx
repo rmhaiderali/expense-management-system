@@ -15,6 +15,8 @@ import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import SideCard from "./SideCard";
 import { toast } from "react-toastify";
+import moment from "moment";
+import writeXlsxFile from "write-excel-file";
 
 const AdminHome = () => {
   const toastOptions = {
@@ -193,6 +195,49 @@ const AdminHome = () => {
     document.body.removeChild(capture);
   };
 
+  async function downloadExcel() {
+    const header = [
+      { value: "User", fontWeight: "bold" },
+      { value: "Date", fontWeight: "bold" },
+      { value: "Title", fontWeight: "bold" },
+      { value: "Client", fontWeight: "bold" },
+      { value: "Project", fontWeight: "bold" },
+      { value: "Site-Id", fontWeight: "bold" },
+      { value: "City", fontWeight: "bold" },
+      { value: "Amount", fontWeight: "bold" },
+    ];
+
+    const rows = transactions.map((item) => [
+      { value: item.user?.name || "Deleted User" },
+      { value: moment(item.date).format("DD-MM-YYYY") },
+      { value: item.title },
+      { value: item.category },
+      { value: item.description },
+      { value: item.transactionType },
+      { value: item.city },
+      { value: item.amount },
+    ]);
+
+    const totalRow = [
+      { value: "Total Amount", fontWeight: "bold", align: "center", span: 7 },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        value: "SUM(H2:H" + (transactions.length + 1) + ")",
+        fontWeight: "bold",
+        type: "Formula",
+      },
+    ];
+
+    const data = [header, ...rows, totalRow];
+
+    await writeXlsxFile(data, { fileName: "transactions.xlsx" });
+  }
+
   return (
     <>
       {loading ? (
@@ -311,12 +356,23 @@ const AdminHome = () => {
 
               {transactions?.length > 0 && view === "table" && (
                 <Button
-                  className="full"
+                  className="half"
                   variant="primary"
                   style={{ marginTop: "32px" }}
                   onClick={() => downloadTransactions(true)}
                 >
                   Export as PDF
+                </Button>
+              )}
+
+              {transactions?.length > 0 && view === "table" && (
+                <Button
+                  className="half"
+                  variant="primary"
+                  style={{ marginTop: "32px" }}
+                  onClick={() => downloadExcel()}
+                >
+                  Export as Excel
                 </Button>
               )}
             </div>
