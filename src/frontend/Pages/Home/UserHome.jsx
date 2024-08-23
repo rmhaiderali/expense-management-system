@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Modal, Form, Container } from "react-bootstrap";
 import "./Home.css";
@@ -7,11 +7,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Spinner from "../../Components/Spinner";
 import TableData from "./TableData";
-import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
-import BarChartIcon from "@mui/icons-material/BarChart";
 import Analytics from "./Analytics";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import SideCard from "./SideCard";
 
 const UserHome = () => {

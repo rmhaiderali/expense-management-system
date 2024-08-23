@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import "./Home.css";

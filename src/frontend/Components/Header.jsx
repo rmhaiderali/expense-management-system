@@ -1,9 +1,8 @@
-// NavbarComponent.js
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Navbar, Button } from "react-bootstrap";
-import "./style.css";
 import { useNavigate } from "react-router-dom";
 import { host } from "../Utils/ApiRequest";
+import "./style.css";
 
 const Header = () => {
   const navigate = useNavigate();

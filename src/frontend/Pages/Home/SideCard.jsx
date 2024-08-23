@@ -65,44 +65,46 @@ export default function SideCard({
       {isCardFullyOpen && (
         <div className="card-body">
           <table className="transaction-details">
-            <tr>
-              <th>Start Date:</th>
-              <th>
-                {frequency === "custom"
-                  ? startDate
-                    ? startDate.toLocaleDateString("en-PK")
-                    : "Choose Start Date"
-                  : new Date(
-                      Date.now() - frequency * 86400000
-                    ).toLocaleDateString("en-PK")}
-              </th>
-            </tr>
-            <tr>
-              <th>End Date:</th>
-              <th>
-                {frequency === "custom"
-                  ? endDate
-                    ? endDate.toLocaleDateString("en-PK")
-                    : "Choose End Date"
-                  : new Date().toLocaleDateString("en-PK")}
-              </th>
-            </tr>
-            <tr>
-              <th>Total Amount:</th>
-              <th>{totalTurnOver}</th>
-            </tr>
-            <tr>
-              <th>Discription:</th>
-              <th>
-                {frequency === "custom"
-                  ? "Transactions of days between start and end date"
-                  : "Transactions of last " + frequency + " days"}
-              </th>
-            </tr>
-            <tr>
-              <th>Status:</th>
-              <th>Open</th>
-            </tr>
+            <tbody>
+              <tr>
+                <th>Start Date:</th>
+                <th>
+                  {frequency === "custom"
+                    ? startDate
+                      ? startDate.toLocaleDateString("en-PK")
+                      : "Choose Start Date"
+                    : new Date(
+                        Date.now() - frequency * 86400000
+                      ).toLocaleDateString("en-PK")}
+                </th>
+              </tr>
+              <tr>
+                <th>End Date:</th>
+                <th>
+                  {frequency === "custom"
+                    ? endDate
+                      ? endDate.toLocaleDateString("en-PK")
+                      : "Choose End Date"
+                    : new Date().toLocaleDateString("en-PK")}
+                </th>
+              </tr>
+              <tr>
+                <th>Total Amount:</th>
+                <th>{totalTurnOver}</th>
+              </tr>
+              <tr>
+                <th>Discription:</th>
+                <th>
+                  {frequency === "custom"
+                    ? "Transactions of days between start and end date"
+                    : "Transactions of last " + frequency + " days"}
+                </th>
+              </tr>
+              <tr>
+                <th>Status:</th>
+                <th>Open</th>
+              </tr>
+            </tbody>
           </table>
         </div>
       )}

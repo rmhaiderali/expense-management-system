@@ -1,5 +1,3 @@
-import React from "react";
-
 const LineProgressBar = ({ label, percentage, lineColor }) => {
   return (
     <div className="container">

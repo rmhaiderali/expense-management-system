@@ -1,4 +1,3 @@
-import React from "react";
 import CircularProgressBar from "../../Components/CircularProgressBar";
 
 const Analytics = ({ transactions }) => {

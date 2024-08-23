@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Button, Container, Form, Modal, Table } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Button, Form, Modal, Table } from "react-bootstrap";
 import moment from "moment";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -10,7 +10,7 @@ import {
   editTransactions,
 } from "../../Utils/ApiRequest";
 import axios from "axios";
-import { Image } from "antd";
+import Image from "antd/es/image";
 
 const TableData = (props) => {
   const [show, setShow] = useState(false);
@@ -156,7 +156,7 @@ const TableData = (props) => {
                       <th>Site-Id</th>
                       <th>City</th>
                       <th>Amount</th>
-                      <th>Image</th>
+                      {/* <th>Image</th> */}
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -187,7 +187,7 @@ const TableData = (props) => {
                         <td>
                           <div>{item.amount}</div>
                         </td>
-                        <td>
+                        {/* <td>
                           <div>
                             <Image
                               height={40}
@@ -195,7 +195,7 @@ const TableData = (props) => {
                               src={`${host}/${item.image}`}
                             />
                           </div>
-                        </td>
+                        </td> */}
                         <td>
                           <div>
                             <div className="icons-handle">
