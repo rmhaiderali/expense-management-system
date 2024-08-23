@@ -10,7 +10,7 @@ import resetPasswordTemplate from "../utils/emailTemplates/resetPassword.js";
 const JWT_Key = process.env.JWT_SECRET;
 
 export const verifyUser = async (req, res, next) => {
-  const token = req.get("x-access-token") || req.get("Authorization");
+  const token = req.get("x-access-token") || req.get("authorization");
 
   if (!token) {
     return res.json({

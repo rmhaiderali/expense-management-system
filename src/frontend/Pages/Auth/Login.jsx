@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { loginAPI, approveAPI } from "../../Utils/ApiRequest";
-import { Eye, EyeSlash, Envelope, Key } from "react-bootstrap-icons";
+import { Eye, EyeSlash, Envelope, Key } from "../../Utils/BootstrapIcons";
 import InputGroup from "react-bootstrap/InputGroup";
 
 const Login = () => {

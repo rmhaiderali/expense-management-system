@@ -3,13 +3,13 @@ import react from "@vitejs/plugin-react-swc";
 import express from "express";
 import "dotenv/config.js";
 
-function useExpressInVite(entry, isRouter = false) {
+function useExpressInVite(entry) {
   return {
     name: "expressAppMiddleware",
     configureServer: async (server) => {
       async function expressAppMiddleware(req, res, next) {
         const app = await server.ssrLoadModule(entry);
-        (isRouter ? express().use(app.default) : app.default)(req, res, next);
+        app.default(req, res, next);
       }
 
       server.middlewares.use(expressAppMiddleware);
@@ -20,5 +20,5 @@ function useExpressInVite(entry, isRouter = false) {
 // https://vitejs.dev/config/
 export default defineConfig({
   server: { port: process.env.PORT },
-  plugins: [useExpressInVite("/src/backend/router.js", true), react()],
+  plugins: [useExpressInVite("/src/backend/app.js"), react()],
 });

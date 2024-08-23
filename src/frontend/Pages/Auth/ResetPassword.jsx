@@ -8,7 +8,7 @@ import {
   requestResetPasswordAPI,
   resetPasswordAPI,
 } from "../../Utils/ApiRequest";
-import { Eye, EyeSlash, Envelope, Key } from "react-bootstrap-icons";
+import { Eye, EyeSlash, Envelope, Key } from "../../Utils/BootstrapIcons";
 import InputGroup from "react-bootstrap/InputGroup";
 
 const ResetPassword = () => {

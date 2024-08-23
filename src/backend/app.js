@@ -1,10 +1,16 @@
 import express from "express";
-import router from "./router.js";
+import { connectDB } from "./db/Database.js";
+import transactionRoutes from "./routers/TransactionsRouter.js";
+import userRoutes from "./routers/UserRouter.js";
+
+await connectDB();
 
 const app = express();
 
-app.use(router, express.static("dist"), (req, res) => {
-  res.sendFile("dist/index.html", { root: process.cwd() });
-});
+app.use(express.json());
+app.use(express.static("uploads"));
+
+app.use("/api/v1", transactionRoutes);
+app.use("/api/auth", userRoutes);
 
 export default app;

@@ -1,8 +1,13 @@
 import "dotenv/config.js";
+import express from "express";
 import app from "./app.js";
 import https from "https";
 import http from "http";
 import fs from "fs";
+
+app.use(express.static("dist"), (req, res) => {
+  res.sendFile("dist/index.html", { root: process.cwd() });
+});
 
 const port = process.env.PORT;
 
