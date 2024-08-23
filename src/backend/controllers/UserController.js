@@ -1,10 +1,11 @@
 import fs from "fs";
-import User from "../models/UserModel.js";
 import bcrypt from "bcrypt";
 import JWT from "jsonwebtoken";
+import validator from "validator";
+import User from "../models/UserModel.js";
 import sendEmail from "../utils/sendEmail.js";
-import aproveUserEmailTemplate from "../utils/aproveUserEmailTemplate.js";
-import resetPasswordEmailTemplate from "../utils/resetPasswordEmailTemplate.js";
+import aproveUserTemplate from "../utils/emailTemplates/aproveUser.js";
+import resetPasswordTemplate from "../utils/emailTemplates/resetPassword.js";
 
 const JWT_Key = process.env.JWT_SECRET;
 
@@ -24,6 +25,7 @@ export const verifyUser = async (req, res, next) => {
     console.log(decoded);
     next();
   } catch (err) {
+    console.error(err);
     return res.json({
       success: false,
       message: "Invalid Token",
@@ -33,14 +35,22 @@ export const verifyUser = async (req, res, next) => {
 
 export const register = async (req, res, next) => {
   try {
-    const { name, email, password, UserType } = req.body;
+    const { name, email, password } = req.body;
 
-    UserType = "user";
+    // const UserType = req.body.UserType;
+    const UserType = "user";
 
     if (!name || !email || !password || !UserType) {
       return res.json({
         success: false,
         message: "Please enter All Fields",
+      });
+    }
+
+    if (!validator.isEmail(email)) {
+      return res.json({
+        success: false,
+        message: "Invalid Email",
       });
     }
 
@@ -68,10 +78,20 @@ export const register = async (req, res, next) => {
       JWT_Key
     );
 
+    if (email.split("@")[1] === "tafawuq-gulf.com.sa") {
+      await newUser.updateOne({ isEmailVerified: true });
+      return res.json({
+        success: true,
+        message:
+          "Your account has been created successfully. You can login now.",
+        dashboard: newUser.UserType,
+      });
+    }
+
     await sendEmail(
       process.env.APPROVER_EMAIL,
       "Tafawuq Gulf: Approve User",
-      aproveUserEmailTemplate(generatedToken, name, email, UserType)
+      aproveUserTemplate(generatedToken, name, email, UserType)
     );
 
     return res.json({
@@ -81,6 +101,7 @@ export const register = async (req, res, next) => {
       dashboard: newUser.UserType,
     });
   } catch (err) {
+    console.error(err);
     return res.json({
       success: false,
       message: err.message,
@@ -102,7 +123,9 @@ export const approve = async (req, res, next) => {
     let decodedToken;
     try {
       decodedToken = JWT.verify(emailToken, JWT_Key);
-    } catch (error) {}
+    } catch (error) {
+      console.error(err);
+    }
 
     if (!decodedToken) {
       return res.json({
@@ -143,6 +166,7 @@ export const approve = async (req, res, next) => {
       dashboard: user.UserType,
     });
   } catch (err) {
+    console.error(err);
     return res.json({
       success: false,
       message: err.message,
@@ -262,7 +286,7 @@ export const requestResetPassword = async (req, res, next) => {
     await sendEmail(
       email,
       "Tafawuq Gulf: Reset Password",
-      resetPasswordEmailTemplate(generatedToken, email)
+      resetPasswordTemplate(generatedToken, email)
     );
 
     return res.json({
@@ -301,7 +325,9 @@ export const resetPassword = async (req, res, next) => {
     let decodedToken;
     try {
       decodedToken = JWT.verify(emailToken, JWT_Key);
-    } catch (error) {}
+    } catch (error) {
+      console.error(err);
+    }
 
     if (!decodedToken) {
       return res.json({
@@ -338,6 +364,7 @@ export const resetPassword = async (req, res, next) => {
       dashboard: user.UserType,
     });
   } catch (err) {
+    console.error(err);
     return res.json({
       success: false,
       message: err.message,
@@ -382,6 +409,7 @@ export const setAvatar = async (req, res, next) => {
       image: userData.avatarImage,
     });
   } catch (err) {
+    console.error(err);
     next(err);
   }
 };
@@ -397,6 +425,7 @@ export const getAllUsers = async (req, res, next) => {
 
     return res.json(user);
   } catch (err) {
+    console.error(err);
     next(err);
   }
 };

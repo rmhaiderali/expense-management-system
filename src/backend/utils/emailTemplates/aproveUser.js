@@ -126,8 +126,7 @@ export default function (token, name, email, UserType) {
                                                                 "
                                                               >
                                                                 <b>Name:</b> ${name}<br>
-                                                                <b>Email:</b> ${email}<br>
-                                                                <b>UserType:</b> ${UserType}
+                                                                <b>Email:</b> ${email}
                                                               </p>
                                                             </div>
                                                           </td>
