@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "start": "node src/backend/index.js",
-    "pm2:s": "pm2 start src/backend/index.js -n expense-management-system",
+    "pm2:s": "pm2 start npm -n expense-management-system -- start",
     "pm2:l": "pm2 logs expense-management-system --lines 500",
     "pm2:d": "pm2 delete expense-management-system"
   },
