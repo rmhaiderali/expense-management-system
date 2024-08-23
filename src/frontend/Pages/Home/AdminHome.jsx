@@ -42,7 +42,9 @@ const AdminHome = () => {
   useEffect(() => {
     setFilteredTransactions(
       transactions.filter((t) =>
-        t.user?.name.toLowerCase().includes(filterKeyword.toLowerCase())
+        (t.user?.name?.toLowerCase() || "").includes(
+          filterKeyword.toLowerCase()
+        )
       )
     );
   }, [transactions, filterKeyword]);
@@ -157,11 +159,6 @@ const AdminHome = () => {
         .outerHTML.replace("border-radius: 0.375rem", "");
 
       capture.querySelector(".pdftable").style.display = "block";
-
-      [
-        capture.querySelector("thead > tr"),
-        ...capture.querySelectorAll("tbody > tr"),
-      ].map((e) => e.removeChild(e.lastChild));
 
       html2canvas(capture, { useCORS: true, allowTaint: true, scale: 2 }).then(
         async (canvas) => {

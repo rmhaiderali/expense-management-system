@@ -64,12 +64,8 @@ const TableData = (props) => {
 
     const { data } = await axios.post(
       `${deleteTransactions}/${itemKey}`,
-      {
-        userId: props.user._id,
-      },
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
+      { userId: props.user._id },
+      { headers: { Authorization: `Bearer ${token}` } }
     );
 
     if (data.success === true) {
@@ -156,8 +152,6 @@ const TableData = (props) => {
                       <th>Site-Id</th>
                       <th>City</th>
                       <th>Amount</th>
-                      {/* <th>Image</th> */}
-                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody className="text-black">
@@ -187,224 +181,6 @@ const TableData = (props) => {
                         <td>
                           <div>{item.amount}</div>
                         </td>
-                        {/* <td>
-                          <div>
-                            <Image
-                              height={40}
-                              width={80}
-                              src={`${host}/${item.image}`}
-                            />
-                          </div>
-                        </td> */}
-                        <td>
-                          <div>
-                            <div className="icons-handle">
-                              <EditNoteIcon
-                                sx={{ cursor: "pointer" }}
-                                key={item._id}
-                                id={item._id}
-                                onClick={() => handleEditClick(item._id)}
-                              />
-
-                              <DeleteForeverIcon
-                                sx={{ color: "red", cursor: "pointer" }}
-                                key={index}
-                                id={item._id}
-                                onClick={() => handleDeleteClick(item._id)}
-                              />
-
-                              {editingTransaction && (
-                                <div>
-                                  <Modal
-                                    show={show}
-                                    onHide={handleClose}
-                                    centered
-                                  >
-                                    <Modal.Header closeButton>
-                                      <Modal.Title>
-                                        Update Transaction Details
-                                      </Modal.Title>
-                                    </Modal.Header>
-                                    <Modal.Body>
-                                      <Form onSubmit={handleEditSubmit}>
-                                        <Form.Group
-                                          className="mb-3"
-                                          controlId="formName"
-                                        >
-                                          <Form.Label>Title</Form.Label>
-                                          <Form.Control
-                                            name="title"
-                                            type="text"
-                                            placeholder={
-                                              editingTransaction[0].title
-                                            }
-                                            value={values.title}
-                                            onChange={handleChange}
-                                            list="expense"
-                                          />
-                                          <datalist id="expense">
-                                            <option>Petrol</option>
-                                            <option>Food</option>
-                                            <option>Hotel/Accom.</option>
-                                            <option>Rent A Car</option>
-                                          </datalist>
-                                        </Form.Group>
-
-                                        <Form.Group
-                                          className="mb-3"
-                                          controlId="formAmount"
-                                        >
-                                          <Form.Label>Amount(SRA)</Form.Label>
-                                          <Form.Control
-                                            name="amount"
-                                            type="number"
-                                            placeholder={
-                                              editingTransaction[0].amount
-                                            }
-                                            value={values.amount}
-                                            onChange={handleChange}
-                                          />
-                                        </Form.Group>
-
-                                        <Form.Group
-                                          className="mb-3"
-                                          controlId="formSelect"
-                                        >
-                                          <Form.Label>Client</Form.Label>
-                                          <Form.Control
-                                            name="category"
-                                            value={values.category}
-                                            onChange={handleChange}
-                                            placeholder={
-                                              editingTransaction[0].category
-                                            }
-                                            list="client"
-                                          />
-                                          <datalist id="client">
-                                            <option>Ericsson</option>
-                                            <option>Tawal</option>
-                                            <option>STC</option>
-                                            <option>Mobily</option>
-                                          </datalist>
-                                        </Form.Group>
-
-                                        <Form.Group
-                                          className="mb-3"
-                                          controlId="formDescription"
-                                        >
-                                          <Form.Label>Project</Form.Label>
-                                          <Form.Control
-                                            type="text"
-                                            name="description"
-                                            placeholder={
-                                              editingTransaction[0].description
-                                            }
-                                            value={values.description}
-                                            onChange={handleChange}
-                                            list="project"
-                                          />
-                                          <datalist id="project">
-                                            <option>NeXT 2024</option>
-                                            <option>Next 2023</option>
-                                            <option>Relocation</option>
-                                          </datalist>
-                                        </Form.Group>
-
-                                        <Form.Group
-                                          className="mb-3"
-                                          controlId="formSelect1"
-                                        >
-                                          <Form.Label>Site-Id</Form.Label>
-                                          <Form.Control
-                                            name="transactionType"
-                                            placeholder={
-                                              editingTransaction[0]
-                                                .transactionType
-                                            }
-                                            value={values.transactionType}
-                                            onChange={handleChange}
-                                            list="siteId"
-                                          />
-                                          <datalist id="siteId">
-                                            <option>ZRW981</option>
-                                            <option>ZND783</option>
-                                            <option>ZN778</option>
-                                            <option>1045667</option>
-                                          </datalist>
-                                        </Form.Group>
-
-                                        <Form.Group
-                                          className="mb-3"
-                                          controlId="formSelect1"
-                                        >
-                                          <Form.Label>City</Form.Label>
-                                          <Form.Control
-                                            name="city"
-                                            placeholder={
-                                              editingTransaction[0].city
-                                            }
-                                            value={values.city}
-                                            onChange={handleChange}
-                                            list="city"
-                                          />
-                                          <datalist id="city">
-                                            <option>Riyadh</option>
-                                            <option>Jeddah</option>
-                                            <option>Dammam</option>
-                                            <option>Jubail</option>
-                                            <option>Al Khobar</option>
-                                          </datalist>
-                                        </Form.Group>
-                                        <Form.Group
-                                          className="mb-3"
-                                          controlId="formSelect1"
-                                        >
-                                          <Form.Label>Upload Image</Form.Label>
-                                          <Form.Control
-                                            name="ImageUrl"
-                                            placeholder={
-                                              editingTransaction[0].Image
-                                            }
-                                            type="file"
-                                            onChange={handleImageUpload}
-                                          ></Form.Control>
-                                        </Form.Group>
-
-                                        <Form.Group
-                                          className="mb-3"
-                                          controlId="formDate"
-                                        >
-                                          <Form.Label>Date</Form.Label>
-                                          <Form.Control
-                                            type="date"
-                                            name="date"
-                                            value={values.date}
-                                            onChange={handleChange}
-                                          />
-                                        </Form.Group>
-                                      </Form>
-                                    </Modal.Body>
-                                    <Modal.Footer>
-                                      <Button
-                                        variant="secondary"
-                                        onClick={handleClose}
-                                      >
-                                        Close
-                                      </Button>
-                                      <Button
-                                        variant="primary"
-                                        type="submit"
-                                        onClick={handleEditSubmit}
-                                      >
-                                        Submit
-                                      </Button>
-                                    </Modal.Footer>
-                                  </Modal>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </td>
                       </tr>
                     ))}
                     {transactions && (
@@ -427,8 +203,6 @@ const TableData = (props) => {
                             <b>{totalTurnOver}</b>
                           </div>
                         </td>
-                        <td></td>
-                        <td style={{ borderLeftColor: "transparent" }}></td>
                       </tr>
                     )}
                   </tbody>

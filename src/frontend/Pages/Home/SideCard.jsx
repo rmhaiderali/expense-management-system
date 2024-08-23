@@ -1,4 +1,5 @@
 import { useState } from "react";
+import moment from "moment";
 
 export default function SideCard({
   transactions,
@@ -69,23 +70,21 @@ export default function SideCard({
               <tr>
                 <th>Start Date:</th>
                 <th>
-                  {frequency === "custom"
-                    ? startDate
-                      ? startDate.toLocaleDateString("en-PK")
-                      : "Choose Start Date"
-                    : new Date(
-                        Date.now() - frequency * 86400000
-                      ).toLocaleDateString("en-PK")}
+                  {frequency === "none"
+                    ? "None"
+                    : moment(new Date())
+                        .subtract(frequency - 1, "days")
+                        .format("DD/MM/YYYY")}
                 </th>
               </tr>
               <tr>
                 <th>End Date:</th>
                 <th>
-                  {frequency === "custom"
-                    ? endDate
-                      ? endDate.toLocaleDateString("en-PK")
-                      : "Choose End Date"
-                    : new Date().toLocaleDateString("en-PK")}
+                  {frequency === "none"
+                    ? "None"
+                    : moment(new Date())
+                        .subtract(0, "days")
+                        .format("DD/MM/YYYY")}
                 </th>
               </tr>
               <tr>
